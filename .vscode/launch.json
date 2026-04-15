@@ -2,13 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug active C++ file",
+      "name": "Debug main.cpp",
       "type": "lldb-dap",
       "request": "launch",
-      "program": "${fileDirname}/build/${fileBasenameNoExtension}",
+      "program": "${workspaceFolder}/build/main",
       "args": [],
-      "cwd": "${fileDirname}",
-      "preLaunchTask": "build active file"
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build main.cpp"
     }
   ]
 }

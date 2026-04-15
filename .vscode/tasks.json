@@ -2,11 +2,11 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build active file",
+      "label": "build main.cpp",
       "type": "shell",
-      "command": "mkdir -p '${fileDirname}/build' && /usr/bin/clang++ -std=c++23 -g -O0 -Wall -Wextra -DLOCAL '${file}' -o '${fileDirname}/build/${fileBasenameNoExtension}'",
+      "command": "mkdir -p '${workspaceFolder}/build' && /usr/bin/clang++ -std=c++23 -g -O0 -Wall -Wextra -DLOCAL '${workspaceFolder}/main.cpp' -o '${workspaceFolder}/build/main'",
       "options": {
-        "cwd": "${fileDirname}"
+        "cwd": "${workspaceFolder}"
       },
       "presentation": {
         "reveal": "silent",
