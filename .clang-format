@@ -1,0 +1,56 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+ContinuationIndentWidth: 2
+AccessModifierOffset: -1
+
+# Brace style: attach { to previous line (no new line)
+BreakBeforeBraces: Attach
+Cpp11BracedListStyle: true
+
+# Space-saving: collapse short blocks onto a single line
+AllowShortBlocksOnASingleLine: Always
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortLambdasOnASingleLine: All
+AllowShortEnumsOnASingleLine: true
+
+# Layout
+ColumnLimit: 100
+PointerAlignment: Left
+ReferenceAlignment: Left
+NamespaceIndentation: None
+CompactNamespaces: true
+FixNamespaceComments: true
+
+# No empty-line waste
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+EmptyLineBeforeAccessModifier: Leave
+
+# Constructor / call wrapping
+BinPackArguments: true
+BinPackParameters: true
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+PackConstructorInitializers: NextLine
+
+# Misc spacing
+SpaceBeforeParens: ControlStatements
+SpacesBeforeTrailingComments: 1
+SpaceAfterTemplateKeyword: false
+AlignAfterOpenBracket: Align
+AlignTrailingComments: true
+
+# Includes
+SortIncludes: CaseInsensitive
+IncludeBlocks: Preserve
+
+# C++ standard
+Standard: c++20

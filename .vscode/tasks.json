@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build active file",
+      "type": "shell",
+      "command": "mkdir -p '${fileDirname}/build' && /usr/bin/clang++ -std=c++23 -g -O0 -Wall -Wextra -DLOCAL '${file}' -o '${fileDirname}/build/${fileBasenameNoExtension}'",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "clear": true
+      },
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

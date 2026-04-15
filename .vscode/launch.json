@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug active C++ file",
+      "type": "lldb-dap",
+      "request": "launch",
+      "program": "${fileDirname}/build/${fileBasenameNoExtension}",
+      "args": [],
+      "cwd": "${fileDirname}",
+      "preLaunchTask": "build active file"
+    }
+  ]
+}
