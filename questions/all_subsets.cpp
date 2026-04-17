@@ -40,5 +40,20 @@ int main() {
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  
+  int n;
+  cin >> n;
+  vector<int> input(n);
+  vector<vector<int>> all_subsets;
+  for (int i = 0; i < n; ++i) { cin >> input[i]; }
+  for (int i = 0; i < ((1 << n)); ++i) {
+    vector<int> subset;
+    for (int j = 0; j < n; ++j) {
+      if (i & (1 << j)) { subset.push_back(input[j]); }
+    }
+    all_subsets.push_back(subset);
+  }
+  for (int i = 0; i < all_subsets.size(); ++i) {
+    for (int j = 0; j < all_subsets[i].size(); ++j) { cout << all_subsets[i][j] << " "; }
+    cout << endl;
+  }
 }
