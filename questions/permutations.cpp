@@ -34,6 +34,21 @@
 #include <vector>
 using namespace std;
 
+void backtrack(vector<int>& A, int current, vector<vector<int>>& all_combinations) {
+  if (current == A.size()) {
+    all_combinations.push_back(A);
+    return;
+  }
+  for (int i = current; i < A.size(); ++i) {
+    int temp = A[current];
+    A[current] = A[i];
+    A[i] = temp;
+    backtrack(A, current + 1, all_combinations);
+    A[i] = A[current];
+    A[current] = temp;
+  }
+}
+
 int main() {
 #ifdef LOCAL
   freopen("input.txt", "r", stdin);
@@ -41,7 +56,13 @@ int main() {
   freopen("error.txt", "w", stderr);
 #endif
   int n;
-  cin>>n;
-  vector<int> input(n);
-  
+  cin >> n;
+  vector<int> input(n, 0);
+  for (int i = 0; i < n; ++i) { cin >> input[i]; }
+  vector<vector<int>> combinations;
+  backtrack(input, 0, combinations);
+  for (int i = 0; i < combinations.size(); ++i) {
+    for (int j = 0; j < combinations[i].size(); ++j) { cout << combinations[i][j] << " "; }
+    cout << endl;
+  }
 }
