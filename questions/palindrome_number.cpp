@@ -40,30 +40,15 @@ int main() {
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  int n, m;
-  cin >> n >> m;
-  vector<vector<int>> input(n, vector<int>(m, 0));
-  int low = INT_MAX, high = INT_MIN;
-  for (int i = 0; i < n; ++i) {
-    for (int j = 0; j < m; ++j) {
-      cin >> input[i][j];
-      low = min(low, input[i][j]);
-      high = max(high, input[i][j]);
+    int n;
+    cin>>n;
+
+    int reverse=0;
+    while(reverse<n){
+        int last_digit = n%10;
+        n/=10;
+        reverse = reverse*10+last_digit;
     }
-  }
-  int desired = (n * m + 1) / 2;
-  int mid = low + (high - low) / 2;
-  while (low < high) {
-    mid = low + (high - low) / 2;
-    int count = 0;
-    for (int i = 0; i < n; ++i) {
-      count += (upper_bound(input[i].begin(), input[i].end(), mid) - input[i].begin());
-    }
-    if (count < desired) {
-      low = mid + 1;
-    } else {
-      high = mid;
-    }
-  }
-  cout << low << endl;
+    cout<<reverse<<" "<<n<<endl;
+    cout<< ((reverse==n) || ((reverse/10)==n));
 }
