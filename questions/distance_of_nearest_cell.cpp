@@ -34,36 +34,6 @@
 #include <vector>
 using namespace std;
 
-/*
-Problem Description
-
-Given character matrix A of dimensions N×M consisting of O's and X's, where O = white, X = black.
-
-Return the number of black shapes. A black shape consists of one or more adjacent X's (diagonals not included)
-
-
-
-Problem Constraints
-
-1 <= N, M <= 1000
-
-A[i][j] = 'X' or 'O'
-
-
-
-Input Format
-
-The First and only argument is character matrix A.
-
-
-
-Output Format
-
-Return a single integer denoting number of black shapes.
-
-
-*/
-
 // ——— Debug utilities (output to stderr) ———
 
 // operator<< overloads for containers — these compose recursively,
@@ -208,41 +178,43 @@ void dbg(const string& name, priority_queue<T, C, Cmp> pq) {
 #endif
 // ——— End debug utilities ———
 
-void dfs(vector<string>& input, int i, int j) {
-  int n = input.size();
-  int m = input[0].size();
-  if (i < 0 or i >= n or j < 0 or j >= m) { return; }
-  if (input[i][j] == 'X') {
-    input[i][j] = '#';
-    dfs(input, i - 1, j);
-    dfs(input, i + 1, j);
-    dfs(input, i, j - 1);
-    dfs(input, i, j + 1);
-  }
-}
-
-int solution(vector<string>& input) {
-  int answer = 0;
-  for (int i = 0; i < input.size(); ++i) {
-    for (int j = 0; j < input[i].size(); ++j) {
-      if (input[i][j] == 'X') {
-        dfs(input, i, j);
-        ++answer;
-      }
-    }
-  }
-  return answer;
-}
-
 int main() {
 #ifdef LOCAL
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  int n;
-  cin >> n;
-  vector<string> input(n);
-  for (int i = 0; i < n; ++i) { cin >> input[i]; }
-  cout << solution(input);
+  int n, m;
+  cin >> n >> m;
+  vector<vector<int>> input(n, vector<int>(m));
+  vector<vector<int>> distances(n, vector<int>(m, INT_MAX));
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) { cin >> input[i][j]; }
+  }
+  queue<tuple<int, int, int>> q;
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      if (input[i][j] == 1) {
+        distances[i][j] = 0;
+        q.push({i, j, 0});
+      }
+    }
+  }
+  vector<int> dr = {-1, 1, 0, 0};
+  vector<int> dc = {0, 0, -1, 1};
+  while (!q.empty()) {
+    auto [i, j, v] = q.front();
+    q.pop();
+    for (int k = 0; k < 4; ++k) {
+      int nr = i + dr[k];
+      int nc = j + dc[k];
+      if (nr >= 0 and nr < n and nc >= 0 and nc < m) {
+        if (input[nr][nc] == 0) {
+          input[nr][nc] = 1;
+          distances[nr][nc] = v + 1;
+          q.push({nr, nc, v + 1});
+        }
+      }    }
+  }
+  DBG(distances);
 }

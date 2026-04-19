@@ -39,7 +39,8 @@ Problem Description
 
 Given character matrix A of dimensions N×M consisting of O's and X's, where O = white, X = black.
 
-Return the number of black shapes. A black shape consists of one or more adjacent X's (diagonals not included)
+Return the number of black shapes. A black shape consists of one or more adjacent X's (diagonals not
+included)
 
 
 
