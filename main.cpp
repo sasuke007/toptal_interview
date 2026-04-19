@@ -34,41 +34,6 @@
 #include <vector>
 using namespace std;
 
-/*
-Problem Description
-
-Given character matrix A of dimensions N×M consisting of O's and X's, where O = white, X = black.
-
-Return the number of black shapes. A black shape consists of one or more adjacent X's (diagonals not included)
-
-
-
-Problem Constraints
-
-1 <= N, M <= 1000
-
-A[i][j] = 'X' or 'O'
-
-
-
-Input Format
-
-The First and only argument is character matrix A.
-
-
-
-Output Format
-
-Return a single integer denoting number of black shapes.
-
-
-*/
-
-// ——— Debug utilities (output to stderr) ———
-
-// operator<< overloads for containers — these compose recursively,
-// so stack<pair<int,int>>, vector<set<pair<int,int>>>, etc. all work.
-
 template<typename A, typename B>
 ostream& operator<<(ostream& os, const pair<A, B>& p) {
   return os << "(" << p.first << ", " << p.second << ")";
@@ -206,33 +171,6 @@ void dbg(const string& name, priority_queue<T, C, Cmp> pq) {
 #else
 #define DBG(x)
 #endif
-// ——— End debug utilities ———
-
-void dfs(vector<string>& input, int i, int j) {
-  int n = input.size();
-  int m = input[0].size();
-  if (i < 0 or i >= n or j < 0 or j >= m) { return; }
-  if (input[i][j] == 'X') {
-    input[i][j] = '#';
-    dfs(input, i - 1, j);
-    dfs(input, i + 1, j);
-    dfs(input, i, j - 1);
-    dfs(input, i, j + 1);
-  }
-}
-
-int solution(vector<string>& input) {
-  int answer = 0;
-  for (int i = 0; i < input.size(); ++i) {
-    for (int j = 0; j < input[i].size(); ++j) {
-      if (input[i][j] == 'X') {
-        dfs(input, i, j);
-        ++answer;
-      }
-    }
-  }
-  return answer;
-}
 
 int main() {
 #ifdef LOCAL
@@ -240,9 +178,5 @@ int main() {
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  int n;
-  cin >> n;
-  vector<string> input(n);
-  for (int i = 0; i < n; ++i) { cin >> input[i]; }
-  cout << solution(input);
+  
 }
