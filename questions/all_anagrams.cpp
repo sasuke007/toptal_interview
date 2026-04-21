@@ -51,20 +51,33 @@ ostream& operator<<(ostream& os, const tuple<Args...>& t) {
 }
 
 namespace _dbg_fmt {
-  inline int& depth() { static thread_local int d = 0; return d; }
-  inline string indent() { return string(depth() * 2, ' '); }
-
-  template<typename T> struct is_container : false_type {};
-  template<typename T, typename A> struct is_container<vector<T, A>> : true_type {};
-  template<typename T, typename A> struct is_container<list<T, A>> : true_type {};
-  template<typename T, typename A> struct is_container<deque<T, A>> : true_type {};
-  template<typename T, typename C, typename A> struct is_container<set<T, C, A>> : true_type {};
-  template<typename T, typename H, typename E, typename A> struct is_container<unordered_set<T, H, E, A>> : true_type {};
-  template<typename T, typename C, typename A> struct is_container<multiset<T, C, A>> : true_type {};
-  template<typename K, typename V, typename C, typename A> struct is_container<map<K, V, C, A>> : true_type {};
-  template<typename K, typename V, typename H, typename E, typename A> struct is_container<unordered_map<K, V, H, E, A>> : true_type {};
-  template<typename T> constexpr bool is_container_v = is_container<T>::value;
+inline int& depth() {
+  static thread_local int d = 0;
+  return d;
 }
+inline string indent() { return string(depth() * 2, ' '); }
+
+template<typename T>
+struct is_container : false_type {};
+template<typename T, typename A>
+struct is_container<vector<T, A>> : true_type {};
+template<typename T, typename A>
+struct is_container<list<T, A>> : true_type {};
+template<typename T, typename A>
+struct is_container<deque<T, A>> : true_type {};
+template<typename T, typename C, typename A>
+struct is_container<set<T, C, A>> : true_type {};
+template<typename T, typename H, typename E, typename A>
+struct is_container<unordered_set<T, H, E, A>> : true_type {};
+template<typename T, typename C, typename A>
+struct is_container<multiset<T, C, A>> : true_type {};
+template<typename K, typename V, typename C, typename A>
+struct is_container<map<K, V, C, A>> : true_type {};
+template<typename K, typename V, typename H, typename E, typename A>
+struct is_container<unordered_map<K, V, H, E, A>> : true_type {};
+template<typename T>
+constexpr bool is_container_v = is_container<T>::value;
+} // namespace _dbg_fmt
 
 template<typename T>
 ostream& operator<<(ostream& os, const vector<T>& c) {
@@ -73,8 +86,7 @@ ostream& operator<<(ostream& os, const vector<T>& c) {
     os << "[  (size=" << c.size() << ")\n";
     _dbg_fmt::depth()++;
     for (size_t i = 0; i < c.size(); ++i) {
-      os << _dbg_fmt::indent() << "[" << i << "] " << c[i]
-         << (i + 1 < c.size() ? "," : "") << "\n";
+      os << _dbg_fmt::indent() << "[" << i << "] " << c[i] << (i + 1 < c.size() ? "," : "") << "\n";
     }
     _dbg_fmt::depth()--;
     return os << _dbg_fmt::indent() << "]";
@@ -228,8 +240,7 @@ ostream& operator<<(ostream& os, const deque<T>& c) {
     os << "[  (size=" << c.size() << ")\n";
     _dbg_fmt::depth()++;
     for (size_t i = 0; i < c.size(); ++i) {
-      os << _dbg_fmt::indent() << "[" << i << "] " << c[i]
-         << (i + 1 < c.size() ? "," : "") << "\n";
+      os << _dbg_fmt::indent() << "[" << i << "] " << c[i] << (i + 1 < c.size() ? "," : "") << "\n";
     }
     _dbg_fmt::depth()--;
     return os << _dbg_fmt::indent() << "]";
@@ -294,5 +305,38 @@ int main() {
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  
+  string s, p;
+  cin >> s >> p;
+  // if(p.size()>s.size()){
+  //   cout<<"";
+  //   return 0;
+  // }
+  unordered_map<char, int> p_count;
+  for (char ch : p) { p_count[ch]++; }
+  vector<int> answer;
+  vector<vector<int>> prefixCounts(26, vector<int>(s.size() + 1));
+  for (char i = 'a'; i <= 'z'; ++i) {
+    for (int j = 0; j < s.size(); ++j) {
+      if (s[j] == i) {
+        prefixCounts[i - 'a'][j + 1] = prefixCounts[i - 'a'][j] + 1;
+      } else {
+        prefixCounts[i - 'a'][j + 1] = prefixCounts[i - 'a'][j];
+      }
+    }
+  }
+  for (int i = p.size() - 1; i < s.size(); ++i) {
+    int start = i - p.size() + 1;
+    int end = i;
+    bool isAnagram = true;
+    for (char ch = 'a'; ch <= 'z'; ++ch) {
+      int characterCount = prefixCounts[ch - 'a'][end + 1] - prefixCounts[ch - 'a'][start];
+      if (characterCount != p_count[ch]) {
+        isAnagram = false;
+        break;
+      }
+    }
+    if (isAnagram) { answer.push_back(start); }
+  }
+  for (int i = 0; i < answer.size(); ++i) { cout << answer[i] << " "; }
+  cout << endl;
 }
