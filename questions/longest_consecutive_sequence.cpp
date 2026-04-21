@@ -305,33 +305,22 @@ int main() {
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  int n, k;
-  cin >> n >> k;
+  int n;
+  cin >> n;
   vector<int> input(n);
-  for (int i = 0; i < n; i++) cin >> input[i];
-  int low = 0;
-  int high = n - 1;
-  int pivot = 0;
-  while (low <= high) {
-    int mid = (low + high) / 2;
-    if ((mid - 1 >= 0) and (input[mid] < input[mid - 1])) {
-      pivot = mid;
-      break;
-    }
-    if (input[mid] > input[n - 1]) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
+  for (int i = 0; i < n; ++i) { cin >> input[i]; }
+  unordered_set<int> set(input.begin(), input.end());
+  int answer = 1;
+  for (int i = 0; i < n; ++i) {
+    int val = input[i];
+    if (set.find(val + 1) == set.end()) {
+      int aux = 0;
+      while (set.find(val) != set.end()) {
+        ++aux;
+        --val;
+      }
+      answer = max(answer, aux);
     }
   }
-  // cout << pivot << endl;
-  if(binary_search(input.begin()+pivot,input.end(),k)){
-    auto right = lower_bound(input.begin() + pivot, input.end(), k);
-    cout << right - input.begin();
-  }else if(binary_search(input.begin(),input.begin()+pivot,k)){
-    auto left = lower_bound(input.begin(), input.begin() + pivot, k);
-    cout << left - input.begin();
-  }else{
-    cout<<-1<<endl;
-  }
+  cout << answer;
 }

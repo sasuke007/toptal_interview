@@ -308,30 +308,21 @@ int main() {
   int n, k;
   cin >> n >> k;
   vector<int> input(n);
-  for (int i = 0; i < n; i++) cin >> input[i];
-  int low = 0;
-  int high = n - 1;
-  int pivot = 0;
-  while (low <= high) {
-    int mid = (low + high) / 2;
-    if ((mid - 1 >= 0) and (input[mid] < input[mid - 1])) {
-      pivot = mid;
-      break;
-    }
-    if (input[mid] > input[n - 1]) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
+  for (int i = 0; i < n; ++i) { cin >> input[i]; }
+  unordered_map<int, int> freq;
+  for (int num : input) { freq[num]++; }
+  priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+  for (auto it : freq) {
+    if (pq.size() < k) {
+      pq.push({it.second, it.first});
+    } else if (pq.top().first < it.second) {
+      pq.pop();
+      pq.push({it.second, it.first});
     }
   }
-  // cout << pivot << endl;
-  if(binary_search(input.begin()+pivot,input.end(),k)){
-    auto right = lower_bound(input.begin() + pivot, input.end(), k);
-    cout << right - input.begin();
-  }else if(binary_search(input.begin(),input.begin()+pivot,k)){
-    auto left = lower_bound(input.begin(), input.begin() + pivot, k);
-    cout << left - input.begin();
-  }else{
-    cout<<-1<<endl;
+  while (!pq.empty()) {
+    cout << pq.top().second << " ";
+    pq.pop();
   }
+  cout << endl;
 }
