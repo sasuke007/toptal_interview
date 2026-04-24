@@ -305,26 +305,30 @@ int main() {
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  string s;
-  cin >> s;
-  unordered_map<char, int> freq;
-  for (char ch : s) { freq[ch]++; }
-  vector<int> freq_arr;
-  for (auto it : freq) { freq_arr.push_back(it.second); }
-  sort(freq_arr.begin(), freq_arr.end());
-  int end = freq_arr.size() - 2;
-  int deletions = 0;
-  while (end >= 0) {
-    if (freq_arr[end + 1] == 0) {
-      deletions += freq_arr[end];
-      freq_arr[end] = 0;
-    } else if (freq_arr[end] >= freq_arr[end + 1]) {
-      int temp = freq_arr[end];
-      freq_arr[end] = freq_arr[end + 1] - 1;
-      deletions += (temp - freq_arr[end]);
+  int n;
+  cin >> n;
+  vector<int> a(n);
+  for (int i = 0; i < n; i++) {
+    int b;
+    cin >> b;
+    if (b == 0) { a[i] = 0; }
+    else if (b < 0) {
+      a[i] = -1;
+    } else {
+      a[i] = 1;
     }
-    --end;
   }
-  DBG(freq_arr);
-  cout << deletions << endl;
+  vector<int> prefix_sum(n + 1, 0);
+  unordered_map<int, int> prev;
+  for (int i = 1; i <= n; ++i) { prefix_sum[i] = prefix_sum[i - 1] + a[i - 1]; }
+  int answer = 0;
+  for (int i = 0; i <= n; ++i) {
+    int val = prefix_sum[i];
+    if (prev.find(val) != prev.end()) {
+      answer = max(answer, i - prev[val]);
+    } else {
+      prev[prefix_sum[i]] = i;
+    }
+  }
+  cout<<answer<<endl;
 }
