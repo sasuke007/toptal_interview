@@ -299,20 +299,46 @@ void dbg(const string& name, priority_queue<T, C, Cmp> pq) {
 #define DBG(x)
 #endif
 
-int totalDigits(int n) {
-  int count = 0;
-  while (n) {
-    ++count;
-    n /= 10;
-  }
-  return count;
-}
-
 int main() {
 #ifdef LOCAL
   freopen("input.txt", "r", stdin);
   freopen("output.txt", "w", stdout);
   freopen("error.txt", "w", stderr);
 #endif
-  
+  int n, k;
+  cin >> n >> k;
+  int q;
+  cin >> q;
+  vector<vector<pair<int, int>>> graph(n + 1);
+  while (q--) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    graph[u].push_back({v, w});
+  }
+  vector<int> distance(n + 1, INT_MAX);
+  priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> min_heap;
+  distance[k] = 0;
+  min_heap.push({0, k});
+  while (!min_heap.empty()) {
+    pair<int, int> node = min_heap.top();
+    min_heap.pop();
+    if (node.first > distance[node.second]) { continue; }
+    for (pair<int, int> v : graph[node.second]) {
+      if (node.first + v.second < distance[v.first]) {
+        distance[v.first] = min(distance[v.first], node.first + v.second);
+        min_heap.push({node.first + v.second, v.first});
+      }
+    }
+  }
+  DBG(distance);
+  int answer = 0;
+  for (int i = 1; i < distance.size(); ++i) {
+    if (distance[i] == INT_MAX) {
+      answer = -1;
+      break;
+    } else {
+      answer = max(answer, distance[i]);
+    }
+  }
+  cout << answer << endl;
 }
